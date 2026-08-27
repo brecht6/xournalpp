@@ -1,0 +1,22 @@
+name: Windows installer
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+      - main
+    tags:
+      - 'v*'
+
+jobs:
+  build-windows-installer:
+    name: Build Windows installer
+    uses: ./.github/workflows/create-installers.yml
+    with:
+      # Matches the "windows" target in .github/available-build-targets.json
+      windows_builds: >-
+        [{"displayed_name":"Windows x86_64","runner":"windows-2022",
+        "msystem":"mingw64","msys_package_env":"x86_64","build_portable":"true"}]
+      head_sha: ${{ github.sha }}
+      build_type: RelWithDebInfo
